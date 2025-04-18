@@ -1,0 +1,138 @@
+body {
+    background-color: #1a1a1a;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    background-color: #1a1a1a;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  header img {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+  }
+  
+  header .nav-buttons button {
+    background-color: white;
+    color: black;
+    font-weight: 600;
+    padding: 8px 16px;
+    margin-left: 10px;
+    margin-right: 30px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  header .nav-buttons button:hover {
+    background-color: #cccccc;
+  }
+  
+  main {
+    padding-top: 150px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  
+  .card {
+    background-color: #222222;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    margin-bottom: 24px;
+  }
+  
+  .card h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  .card p,
+  .card label {
+    margin-bottom: 8px;
+    display: block;
+  }
+  
+  .card input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 4px;
+    background-color: #333;
+    color: white;
+  }
+  
+  .card input:disabled {
+    background-color: #444;
+    color: #bbb;
+  }
+  
+  button {
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+  }
+  
+  .edit-btn {
+    background-color: #3b82f6;
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background-color: #2563eb;
+  }
+  
+  .save-btn {
+    background-color: #22c55e;
+    color: white;
+  }
+  
+  .save-btn:hover {
+    background-color: #16a34a;
+  }
+  
+  .cancel-btn {
+    background-color: #6b7280;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #4b5563;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  

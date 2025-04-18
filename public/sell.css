@@ -1,0 +1,111 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1a1a1a;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+.sell-container {
+  padding: 20px;
+}
+
+/* Navigation Bar */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.nav-section {
+  width: 33.33%;
+}
+
+.nav-logo {
+  width: 33.33%;
+  display: flex;
+  justify-content: left;
+}
+
+.nav-logo img {
+  width: 280px;
+  height: auto;
+}
+
+.nav-buttons {
+  width: 33.33%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.nav-buttons button {
+  background-color: #333;
+  color: white;
+  padding: 10px 16px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.nav-buttons button:hover {
+  background-color: #444;
+}
+
+/* Form Section */
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #222;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.5);
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-container input,
+.form-container textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  background-color: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: white;
+  font-size: 15px;
+}
+
+.form-container textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+.form-container button {
+  width: 100%;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.form-container button:hover {
+  background-color: #f0f0f0;
+}
+
+.message {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #4caf50;
+}

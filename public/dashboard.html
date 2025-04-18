@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="dashoard.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="logo">
+            <a href="dashboard.html"><img src="logo.png" alt="Crave Logo"></a>
+        </div>
+        <div class="nav-links">
+            <a href="history.html">History</a>
+            <div class="profile-dropdown">
+                <button class="dropdown-btn">Profile ▼</button>
+                <div class="dropdown-content">
+                    <a href="profile.html">View Profile</a>
+                    <a href="#" id="logoutBtn">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Centered Content -->
+
+    <div class="container">
+        <img src="/logo.png" alt="Crave Logo" style="width: 35rem; height: auto;" />
+        <h1 class="welcome">What would you like to do?</h1>
+        <div class="btn-container">
+            <button onclick="location.href='buy.html'">Order Food</button>
+            <button onclick="location.href='sell.html'">List Food</button>
+        </div>
+    </div>
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+     const token = localStorage.getItem("token");
+     const role = localStorage.getItem("role");
+     const user=localStorage.getItem("user_id");
+ 
+     if (!token || role !== "user") {
+         alert("Please login first");
+         window.location.href = "/login.html"; 
+     }
+ });
+         // Logout Function
+         document.getElementById("logoutBtn").addEventListener("click", () => {
+             localStorage.removeItem("user"); // Clear user data
+             window.location.href = "login.html"; // Redirect to login
+         });
+     </script>
+</body>
+</html>

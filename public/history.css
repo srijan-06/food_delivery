@@ -1,0 +1,245 @@
+body {
+    background-color: #1a1a1a;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding-bottom: 4rem;
+  }
+  
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1a;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    background-color: #121212;
+    align-items: center;
+    padding: 1rem 2rem;
+  }
+  .page-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    
+    margin-top: 7rem; /* Push below navbar */
+  }
+  
+  .logo {
+   
+    height: 65px;
+  }
+  .close-button {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.2s ease;
+  }
+  .close-button:hover {
+    color: red;
+  }
+  
+  .button {
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+  
+  .button:hover {
+    background-color: #ccc;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    color: black;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+  }
+  
+  .dropdown-menu button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropdown-menu button:hover {
+    background-color: #eee;
+  }
+  
+  .container {
+    padding: 8rem 2rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .buyers-list {
+    margin-top: 10px;
+    background: #121113;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  .buyer-entry {
+    margin-bottom: 10px;
+  }
+  .buyer-entry p {
+    margin: 2px 0;
+  }
+  .buyers-btn {
+    margin-top: 10px;
+    padding: 5px 95px;
+    background-color: #e3342f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .buyers-btn:hover {
+    background-color: #cc1f1a;
+  }
+  .buyer-entry {
+    background: #1b1b1c;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  
+  .section {
+    margin-bottom: 3rem;
+  }
+  .toggle-btn {
+    width:100%;
+    margin-top: 10px;
+    background-color: #31af28;
+    color: black;
+    padding: 5px ;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .toggle-btn:hover {
+    background-color: #02fd13;
+  }
+  
+  .section h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  .modal {
+    position: fixed;
+    top: 20%;
+    left: 30%;
+    width: 40%;
+    background: #1a1a1a;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .modal-content textarea {
+    width: 100%;
+    margin-top: 10px;
+  }
+  .star-rating {
+    display: flex;
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  .star {
+    color: gray;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .star.hover,
+  .star.selected {
+    color: gold;
+  }
+  
+  .review-btn {
+    margin-top: 10px;
+    padding: 6px 12px;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  .card {
+    background-color: #222;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  }
+  
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background-color: #111;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+  
+  .card p {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin: 0.2rem 0;
+  }
+  
+  .delete-btn {
+   
+    background-color: #e3342f;
+    color: white;
+    margin-top: 10px;
+    padding: 5px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  
+  .delete-btn:hover {
+    background-color: #cc1f1a;
+  }
+  

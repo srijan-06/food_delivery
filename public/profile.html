@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile - Crave</title>
+  <link rel="stylesheet" href="profile.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <a href="dashboard.html"><img src="logo.png" alt="Crave Logo"></a>
+    <div class="nav-buttons">
+      <button onclick="window.location.href='dashboard.html'">Dashboard</button>
+      <button onclick="window.location.href='history.html'">History</button>
+      <button id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <h1>My Profile</h1>
+
+    <!-- Display View -->
+    <div class="card" id="displayView">
+      <h2>👤 User Info</h2>
+      <p><strong>Email:</strong> <span id="dispEmail"></span></p>
+      <p><strong>Name:</strong> <span id="dispName"></span></p>
+      <p><strong>Phone:</strong> <span id="dispContact"></span></p>
+      <p><strong>Address:</strong> <span id="dispAddress"></span></p>
+      <p><strong>City:</strong> <span id="dispCity"></span></p>
+
+      <div class="button-group">
+        <button class="edit-btn" id="editBtn">Edit Profile</button>
+      </div>
+    </div>
+
+    <!-- Edit Form -->
+    <form class="card" id="editForm" style="display: none;">
+      <h2>✏️ Edit Info</h2>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" disabled />
+
+      <label for="name">Name</label>
+      <input type="text" id="name" required />
+
+      <label for="contact">Phone</label>
+      <input type="text" id="contact" required />
+
+      <label for="address">Address</label>
+      <input type="text" id="address" required />
+
+      <label for="city">City</label>
+      <input type="text" id="city" required />
+
+      <div class="button-group">
+        <button type="submit" class="save-btn">Save</button>
+        <button type="button" class="cancel-btn" onclick="cancelEdit()">Cancel</button>
+      </div>
+    </form>
+  </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const token = localStorage.getItem("token");
+            const userId = localStorage.getItem("user_id");
+
+            if (!token || !userId) {
+                alert("Please login first");
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Fetch user data
+            try {
+                const res = await fetch(`/api/user/${userId}`, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                const user = await res.json();
+
+                // Fill display fields
+                document.getElementById("dispEmail").textContent = user.email;
+                document.getElementById("dispName").textContent = user.name;
+                document.getElementById("dispContact").textContent = user.phone;
+                document.getElementById("dispAddress").textContent = user.address;
+                document.getElementById("dispCity").textContent = user.city;
+
+                // Fill edit form inputs
+                document.getElementById("email").value = user.email;
+                document.getElementById("name").value = user.name;
+                document.getElementById("contact").value = user.phone;
+                document.getElementById("address").value = user.address;
+                document.getElementById("city").value = user.city;
+            } catch (error) {
+                console.error("Failed to fetch user data", error);
+            }
+
+            // Toggle to edit mode
+            document.getElementById("editBtn").addEventListener("click", () => {
+                document.getElementById("displayView").style.display = "none";
+                document.getElementById("editForm").style.display = "block";
+            });
+
+            // Save profile updates
+            document.getElementById("editForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const updatedData = {
+                    name: document.getElementById("name").value,
+                    phone: document.getElementById("contact").value,
+                    address: document.getElementById("address").value,
+                    city: document.getElementById("city").value,
+                   
+                };
+
+                try {
+                    const res = await fetch(`/api/user/${userId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(updatedData)
+                    });
+
+                    const result = await res.json();
+                    if (res.ok) {
+                        alert("Profile updated successfully");
+
+                        // Update display values
+                        document.getElementById("dispName").textContent = updatedData.name;
+                        document.getElementById("dispContact").textContent = updatedData.phone;
+                        document.getElementById("dispAddress").textContent = updatedData.address;
+                        document.getElementById("dispCity").textContent = updatedData.city;
+
+                        // Hide edit form
+                        document.getElementById("editForm").style.display = "none";
+                        document.getElementById("displayView").style.display = "block";
+                    } else {
+                        alert(result.error || "Error updating profile");
+                    }
+                } catch (error) {
+                    alert("Something went wrong. Try again.");
+                    console.error(error);
+                }
+            });
+  
+            // Logout
+            document.getElementById("logoutBtn").addEventListener("click", () => {
+                localStorage.clear();
+                window.location.href = "login.html";
+            });
+        });
+    </script>
+</body>
+</html>

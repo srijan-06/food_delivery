@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">
+            <a href="index.html"><img src="../logo.png" alt="Crave Logo"></a>
+              </div>
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><a href="#" onclick="showSection('users')">Users</a></li>
+            <li><a href="#" onclick="showSection('listings')">Food Listings</a></li>
+            <li><a href="#" onclick="showSection('orders')">Orders</a></li>
+            <li><a href="#" onclick="showSection('order-status')">Order Status</a></li>
+            <li><a href="#" onclick="showSection('reviews')">Reviews</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+    </div>
+
+    <div id="content" class="content">
+        <h1>Welcome, Admin</h1>
+        <section id="users" class="section"></section>
+        <section id="listings" class="section"></section>
+        <section id="orders" class="section"></section>
+        <section id="order-status" class="section"></section>
+        <section id="reviews" class="section"></section>
+    </div>
+
+    <script src="a.js"></script>
+
+
+    
+</body>
+
+</html>

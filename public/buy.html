@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Buy Food</title>
+  <link rel="stylesheet" href="buy.css">
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">
+      <a href="dashboard.html"><img src="logo.png" alt="Crave Logo"></a>
+    </div>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="history.html">History</a>
+      <a href="profile.html">Profile</a>
+      <button id="logoutBtn">Logout</button>
+    </div>
+  </div>
+  
+  <div class="container">
+    <a href="dashboard.html" class="back-arrow">&#8592;</a>
+    <h2>Listings near you</h2>
+    <div class="top-bar">
+      <input type="text" id="searchBox" placeholder="Search...">
+      <a href="bag.html" id="bagIcon">
+        <div class="bag-wrapper">
+          <img src="bag.png" alt="Bag">
+          <span>cart</span>
+        </div>
+      </a>
+    </div>
+    <div id="listingContainer" class="listing-grid"></div>
+  </div>
+  
+  <!-- Review Modal -->
+  <div id="reviewModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h3>Reviews</h3>
+      <div id="reviewList"></div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("user_id");
+
+      if (!token || !userId) {
+        alert("Please login first");
+        window.location.href = "login.html";
+        return;
+      }
+
+      let userCity = "";
+      let cartItems = [];
+
+      try {
+        const res = await fetch(`/api/user/${userId}`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        const user = await res.json();
+        userCity = user.city;
+
+        const cartRes = await fetch(`/api/cart/${userId}`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        cartItems = await cartRes.json();
+
+        const listingsRes = await fetch(`/api/listings/city/${userCity}`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        const listings = await listingsRes.json();
+        displayListings(listings);
+
+        document.getElementById("searchBox").addEventListener("input", (e) => {
+          const search = e.target.value.toLowerCase();
+          const filtered = listings.filter(item => item.title.toLowerCase().includes(search));
+          displayListings(filtered);
+        });
+
+      } catch (err) {
+        console.error("Failed to load listings or cart:", err);
+      }
+
+      function displayListings(listings) {
+        const container = document.getElementById("listingContainer");
+        container.innerHTML = "";
+
+        if (listings.length === 0) {
+          container.innerHTML = "<p>No listings found.</p>";
+          return;
+        }
+
+        listings.forEach(listing => {
+          const alreadyInCart = cartItems.find(item => item.title === listing.title);
+
+          const card = document.createElement("div");
+          card.className = "listing-card";
+
+          card.innerHTML = `
+            <img class="listing-image" src="${listing.image_url}" alt="Listing Image">
+            <h3>${listing.title}</h3>
+            <p>${listing.description}</p>
+            <p><strong>Price:</strong> ₹${listing.price}</p>
+            <p><strong>Avl qty:</strong> ${listing.quantity}</p>
+            <p><strong>Expiry Date:</strong> ${new Date(listing.expiry_date).toLocaleDateString('en-GB')}</p>
+            <p><strong>Seller name:</strong> ${listing.NAME}</p>
+            <p><strong>Seller Rating:</strong>  ${!isNaN(parseFloat(listing.Rating)) ? parseFloat(listing.Rating).toFixed(1) : "No ratings yet"}</p>
+            <button class="reviewBtn" data-seller-id="${listing.user_id}" data-seller-name="${listing.NAME}">Show Reviews</button>
+            <label for="qty-${listing.listing_id}">Qty:</label>
+            <input type="number" id="qty-${listing.listing_id}" min="1" value="1" style="width: 60px;" ${alreadyInCart ? "disabled" : ""}>
+            <button ${alreadyInCart ? "disabled" : ""} onclick="addToBag(${listing.listing_id}, ${listing.quantity})">
+              ${alreadyInCart ? "Added to Bag" : "Add to Bag"}
+            </button>
+          `;
+
+          container.appendChild(card);
+
+          const reviewBtn = card.querySelector(".reviewBtn");
+          reviewBtn.addEventListener("click", async () => {
+  const sellerId = reviewBtn.getAttribute("data-seller-id");
+  const sellerName = reviewBtn.getAttribute("data-seller-name");
+
+  try {
+    const res = await fetch(`/api/reviews/${sellerId}`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    // Log the response to check the structure of the data
+    const reviews = await res.json();
+    console.log("Reviews Response:", reviews);
+
+    const reviewList = document.getElementById("reviewList");
+    reviewList.innerHTML = `<h4>Reviews for ${sellerName}</h4>`;
+    
+    if (reviews.length === 0) {
+      reviewList.innerHTML += "<p>No reviews available.</p>";
+    } else {
+      reviews.forEach(r => {
+        // Log each review to inspect its structure
+        console.log("Review:", r);
+        
+        // Ensure you are accessing the correct properties
+        reviewList.innerHTML += `<div class="review">
+          <p><strong>${r.reviewer_name}:</strong> ${r.comment|| 'No comments available'}</p>
+        </div>`;
+      });
+    }
+
+    document.getElementById("reviewModal").style.display = "block";
+  } catch (err) {
+    console.error("Error fetching reviews:", err);
+    alert("Failed to fetch reviews.");
+  }
+});
+
+        });
+      }
+
+      window.addToBag = async function (listingId, maxQty) {
+        const qtyInput = document.getElementById(`qty-${listingId}`);
+        const quantity = parseInt(qtyInput.value);
+
+        if (isNaN(quantity) || quantity < 1) {
+          alert("Please enter a valid quantity (1 or more).");
+          return;
+        }
+
+        if (quantity > maxQty) {
+          alert(`Only ${maxQty} items available!`);
+          return;
+        }
+
+        try {
+          const res = await fetch('/api/cart', {
+            method: 'POST',
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ user_id: userId, listing_id: listingId, quantity })
+          });
+
+          const result = await res.json();
+          if (res.ok) {
+            alert("Added to bag!");
+            location.reload(); // Refresh page to update button state
+          } else {
+            alert(result.error || "Error adding to bag.");
+          }
+        } catch (error) {
+          console.error("Add to bag error:", error);
+          alert("Something went wrong.");
+        }
+      };
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        localStorage.clear();
+        window.location.href = "login.html";
+      });
+
+      // Modal close button functionality
+      const closeModal = document.getElementById("closeModal");
+      const reviewModal = document.getElementById("reviewModal");
+
+      closeModal.addEventListener("click", () => {
+        reviewModal.style.display = "none"; // Hide the modal
+      });
+
+      // Optional: Close the modal when clicking outside the modal content
+      window.addEventListener("click", (event) => {
+        if (event.target === reviewModal) {
+          reviewModal.style.display = "none";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

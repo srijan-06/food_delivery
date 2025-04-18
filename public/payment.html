@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout</title>
+  <link rel="stylesheet" href="checkout.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Review Your Order</h2>
+    <div id="orderSummary" class="order-summary">
+      <!-- Order details will go here -->
+    </div>
+    <div class="payment-options">
+      <label for="cashOnDelivery">Cash on Delivery</label>
+      <input type="checkbox" id="cashOnDelivery" name="paymentOption" class="payment-toggle">
+    </div>
+    <button id="placeOrderBtn" class="btn-place-order">Place Order</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("user_id");
+
+      if (!token || !userId) {
+        alert("Please log in first.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      // Populate order summary (Example data)
+      
+
+      document.getElementById("placeOrderBtn").addEventListener("click", async () => {
+        try {
+          const response = await fetch(`/api/checkout/${userId}`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            alert("Order placed successfully!");
+            window.location.href = "dashboard.html";
+          } else {
+            alert("Checkout failed: " + result.error);
+          }
+        } catch (err) {
+          console.error("Checkout failed:", err);
+          alert("Something went wrong. Please try again later.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
