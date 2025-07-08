@@ -1,5 +1,6 @@
 const apiUrl = "http://localhost:3000/admin"; // Update if needed
 
+  
 // Function to show section when a button is clicked
 function checkAdminAccess() {
     const token = localStorage.getItem("token");

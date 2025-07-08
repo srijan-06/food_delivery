@@ -18,7 +18,7 @@ document.getElementById("sellForm").addEventListener("submit", async function(ev
     formData.append("image", document.getElementById("image").files[0]);
 
     try {
-        const response = await fetch("http://localhost:3000/add-listing", {
+        const response = await fetch("http://localhost:3000/api/add-listing", {
             method: "POST",
             body: formData
         });

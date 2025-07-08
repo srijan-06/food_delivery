@@ -62,6 +62,11 @@
   </main>
 
     <script>
+        function cancelEdit() {
+            document.getElementById("editForm").style.display = "none";
+            document.getElementById("displayView").style.display = "block";
+        }
+
         document.addEventListener("DOMContentLoaded", async () => {
             const token = localStorage.getItem("token");
             const userId = localStorage.getItem("user_id");

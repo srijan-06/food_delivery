@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const connection = require('../config/db');
+const { connection } = require('../config/db');
 
 function verifyAdmin(req, res, next) {
   const token = req.headers.authorization;

@@ -1,6 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const connection = require("../config/db");
+const { connection } = require("../config/db");
 const router = express.Router();
 
 const adminAuth = (req, res, next) => {

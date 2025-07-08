@@ -1,25 +1,22 @@
 const express = require("express");
-
 const adminAuth = require("../middlewares/adminAuth");
-const connection = require("../config/db");
-
+const { promise } = require("../config/db");
 const router = express.Router();
 
 // Get all users
 router.get("/users",  async (req, res) => {
     try {
-        const [users] = await connection.query("SELECT user_id,NAME,email,phone,address,city,created_at,role FROM users");
+        const [users] = await promise.query("SELECT user_id,NAME,email,phone,address,city,created_at,role FROM users");
         res.json(users);
     } catch (error) {
         res.status(500).json({ error: "Database error" });
     }
-
 });
 
 // Get all food listings
 router.get("/listings",  async (req, res) => {
     try {
-        const [listings] = await connection.query("SELECT * FROM  foodlistings");
+        const [listings] = await promise.query("SELECT * FROM  foodlistings");
         res.json(listings);
     } catch (error) {
         res.status(500).json({ error: "Database error" });
@@ -29,7 +26,7 @@ router.get("/listings",  async (req, res) => {
 // Get all orders
 router.get("/orders",  async (req, res) => {
     try {
-        const [orders] = await connection.query("SELECT  transaction_id,buyer_id,seller_id,listing_id,transaction_date,total_price,quantity FROM  transactions");
+        const [orders] = await promise.query("SELECT  transaction_id,buyer_id,seller_id,listing_id,transaction_date,total_price,quantity FROM  transactions");
         res.json(orders);
     } catch (error) {
         res.status(500).json({ error: "Database error" });
@@ -39,7 +36,7 @@ router.get("/orders",  async (req, res) => {
 // Get all reviews
 router.get("/reviews",  async (req, res) => {
     try {
-        const [reviews] = await connection.query("SELECT * FROM  reviews");
+        const [reviews] = await promise.query("SELECT * FROM  reviews");
         res.json(reviews);
     } catch (error) {
         res.status(500).json({ error: "Database error" });
@@ -49,14 +46,14 @@ router.get("/reviews",  async (req, res) => {
 // Get all reviews
 router.get("/order-status",  async (req, res) => {
   try {
-      const [reviews] = await connection.query("SELECT * FROM  food_order_status");
+      const [reviews] = await promise.query("SELECT * FROM  food_order_status");
       res.json(reviews);
   } catch (error) {
       res.status(500).json({ error: "Database error" });
   }
 });
 
-router.put("/order-status/:id", (req, res) => {
+router.put("/order-status/:id", async (req, res) => {
   const { status } = req.body;
   const { id } = req.params;
 
@@ -65,19 +62,21 @@ router.put("/order-status/:id", (req, res) => {
       return res.status(400).json({ error: "Invalid status value" });
   }
 
-  connection.query(
-      "UPDATE food_order_status SET status = ?, updated_at = NOW() WHERE status_id = ?",
-      [status, id],
-      (err, results) => {
-          if (err) return res.status(500).json({ error: "Database error" });
-          res.json({ message: "Status updated successfully" });
-      }
-  );
+  try {
+    const [results] = await promise.query(
+        "UPDATE food_order_status SET status = ?, updated_at = NOW() WHERE status_id = ?",
+        [status, id]
+    );
+    res.json({ message: "Status updated successfully" });
+  } catch (err) {
+    res.status(500).json({ error: "Database error" });
+  }
 });
+
 router.delete("/users/:id",  async (req, res) => {
     const { id } = req.params;
     try {
-      const [result] = await connection.query("DELETE FROM users WHERE user_id = ?", [id]);
+      const [result] = await promise.query("DELETE FROM users WHERE user_id = ?", [id]);
       if (result.affectedRows === 0) {
         return res.status(404).json({ error: "User not found" });
       }
@@ -92,9 +91,7 @@ router.delete("/users/:id",  async (req, res) => {
   router.delete("/listings/:id",  async (req, res) => {
     const { id } = req.params;
     try {
-      const [result] = await connection.query("DELETE FROM foodlistings WHERE listing_id = ?", [
-        id,
-      ]);
+      const [result] = await promise.query("DELETE FROM foodlistings WHERE listing_id = ?", [id]);
       if (result.affectedRows === 0) {
         return res.status(404).json({ error: "Food listing not found" });
       }
@@ -109,9 +106,7 @@ router.delete("/users/:id",  async (req, res) => {
   router.delete("/orders/:id",  async (req, res) => {
     const { id } = req.params;
     try {
-      const [result] = await connection.query("DELETE FROM transactions WHERE order_id = ?", [
-        id,
-      ]);
+      const [result] = await promise.query("DELETE FROM transactions WHERE order_id = ?", [id]);
       if (result.affectedRows === 0) {
         return res.status(404).json({ error: "Order not found" });
       }
@@ -126,7 +121,7 @@ router.delete("/users/:id",  async (req, res) => {
   router.delete("/reviews/:id",  async (req, res) => {
     const { id } = req.params;
     try {
-      const [result] = await connection.query("DELETE FROM reviews WHERE review_id = ?", [id]);
+      const [result] = await promise.query("DELETE FROM reviews WHERE review_id = ?", [id]);
       if (result.affectedRows === 0) {
         return res.status(404).json({ error: "Review not found" });
       }

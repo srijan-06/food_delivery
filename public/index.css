@@ -1,6 +1,6 @@
 /* Background Styling */
 body {
-    background-image: url('background.jpg'); /* Change image as needed */
+    background-color: #1a1a1a; /* Change image as needed */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -48,8 +48,8 @@ button {
     transition: 0.3s ease;
 }
 .logo img {
-    height: 70px;
-    width: 200px;
+    width: 300px;
+    height: auto;
    position: centre;   
 }
 button:hover {
